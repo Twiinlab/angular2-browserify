@@ -7,25 +7,31 @@ var browserSync = require('browser-sync').create();
 var tsify = require('tsify');
 var sourcemaps = require('gulp-sourcemaps');
 
-function bundle (bundler) {
-    return bundler
+function bundle () {
+
+    var promise = new Promise();
+    
+    browserify({debug:true, entries: ['./app/main.ts']}) 
     .plugin(tsify, { noImplicitAny: true })
+    //.pipe(uglify())
+    //transform
     .bundle()
     .on('error', function (e){
         gutil.leg(e);
     })
     .pipe(source('bundle.js'))
-    //.pipe(sourcemaps.init({loadMaps: true}))
-    // Add transformation tasks to the pipeline here.
-    //.pipe(uglify())
+    
     .on('error', gutil.log)
-    //.pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./dist'));
-    //.pipe(browserSync.stream());
+    .pipe(gulp.dest('./dist').on("finish", ()=>{
+
+        promise.resolve();
+    }));
+
+    return promise;
 }
 
 gulp.task('watch', function(){
-    var watcher = watchify(browserify(
+    /*var watcher = watchify(browserify(
         {
             entries: ['./app/main.ts'],
             debug: true
@@ -37,11 +43,11 @@ gulp.task('watch', function(){
         bundle(watcher);
     })
     watcher.on('log', gutil.log);
-
+*/
     browserSync.init({
         server: "./",
         logFileChanges: false
-    })
+    });
 
-    gulp.watch('./dist/*.js').on('change', browserSync.reload);
+    gulp.watch('./app/*.ts').on('change', ()=>{ bundle().then(() => browserSync.reload())});
 })
