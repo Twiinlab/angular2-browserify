@@ -16,9 +16,12 @@
   "devDependencies": {
     "@types/core-js": "^0.9.34",
     "browserify": "^13.0.1",
+    "gulp-size": "2.1.0",
+    "gulp-uglify": "2.0.0",
     "http-server": "^0.9.0",
     "typescript": "^2.0.3",
-    "uglifyjs": "^2.4.10"
+    "uglifyjs": "^2.4.10",
+    "vinyl-buffer": "1.0.0"
   },
   "dependencies": {
     "@angular/common": "^2.1.0",
@@ -28,6 +31,7 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "browser-sync": "^2.17.5",
     "browserify": "^13.1.1",
+    "es6-promise": "4.0.5",
     "es6-shim": "^0.35.1",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.2.0",
